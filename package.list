@@ -1,0 +1,17 @@
+aiohttp==1.0.5
+async-timeout==3.0.0
+cachetools==2.1.0
+chardet==3.0.4
+discord==0.0.2
+discord.py==0.16.12
+google-api-python-client==1.7.3
+google-auth==1.5.0
+google-auth-httplib2==0.0.3
+httplib2==0.11.3
+multidict==4.3.1
+pyasn1==0.4.3
+pyasn1-modules==0.2.1
+rsa==3.4.2
+six==1.11.0
+uritemplate==3.0.0
+websockets==3.4
