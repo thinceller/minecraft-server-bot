@@ -1,5 +1,6 @@
 import asyncio
 import os
+from time import sleep
 
 from googleapiclient import discovery
 import discord
@@ -7,6 +8,11 @@ import discord
 client = discord.Client()
 
 BOT_TOKEN = os.getenv('BOT_TOKEN')
+
+# Instance information
+PROJECT = 'nagi-minecraft'
+ZONE = 'asia-east1-a'
+INSTANCE = 'mc-server'
 
 # Build and nitialize google api
 compute = discovery.build('compute', 'v1')
@@ -25,13 +31,17 @@ async def on_message(message):
         command = message.content.split(' ')[1]
 
         if command == 'start':
-            m = await client.send_message(message.channel, 'server starting up...')
-            # await サーバー開始スクリプト
-            await client.edit_message(m, 'Success! server started up.')
+            m = await client.send_message(message.channel, 'Server starting up...')
+            start_server(PROJECT, ZONE, INSTANCE)
+            await client.edit_message(m, 'Success! Server started up.')
+            sleep(10)
+            await client.delete_messages([message, m])
         elif command == 'stop':
-            m = await client.send_message(message.channel, 'server stopping...')
-            # await サーバー停止スクリプト
-            await client.edit_message(m, 'Success! server stopped.')
+            m = await client.send_message(message.channel, 'Server stopping...')
+            stop_server(PROJECT, ZONE, INSTANCE)
+            await client.edit_message(m, 'Success! Server stopped.')
+            sleep(10)
+            await client.delete_messages([message, m])
         elif command == 'help':
             m = '''
             ```Usage: /minecraft [start][stop][status]
