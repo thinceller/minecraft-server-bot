@@ -1,11 +1,15 @@
 import asyncio
 import os
 
+from googleapiclient import discovery
 import discord
 
 client = discord.Client()
 
 BOT_TOKEN = os.getenv('BOT_TOKEN')
+
+# Build and nitialize google api
+compute = discovery.build('compute', 'v1')
 
 @client.event
 async def on_ready():
@@ -36,5 +40,15 @@ async def on_message(message):
     status  Show minecraft server status(running or stopped)```
             '''.strip()
             await client.send_message(message.channel, m)
+
+def start_server(project, zone, instance):
+    compute.instances().start(project=project, zone=zone, instance=instance).execute()
+
+def stop_server(project, zone, instance):
+    compute.instances().stop(project=project, zone=zone, instance=instance).execute()
+
+def get_server_status(project, zone, instance):
+    res = compute.instances().get(project=project, zone=zone, instance=instance).execute()
+    return res['status']
 
 client.run(BOT_TOKEN)
