@@ -42,6 +42,23 @@ async def on_message(message):
             await client.edit_message(m, 'Success! Server stopped.')
             sleep(10)
             await client.delete_messages([message, m])
+        elif command == 'status':
+            status = get_server_status(PROJECT, ZONE, INSTANCE)
+
+            if status == 'RUNNING':
+                m = await client.send_message(message.channel, 'Server is running! Please enjoy Minecraft!')
+                sleep(10)
+                await client.delete_messages([message, m])
+            elif status in {'STOPPING', 'STOPPED'}:
+                m = await client.send_message(message.channel,
+                                'Server is stopped. If you play Minecraft, please chat in this channel, `/minecraft start`.')
+                sleep(10)
+                await client.delete_messages([message, m])
+            else:
+                m = await client.send_message(message.channel,
+                                'Server is not running. Please wait for a while, and chat in this channel, `/minecraft start`.')
+                sleep(10)
+                await client.delete_messages([message, m])
         elif command == 'help':
             m = '''
             ```Usage: /minecraft [start][stop][status]
