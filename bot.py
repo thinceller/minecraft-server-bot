@@ -17,8 +17,24 @@ async def on_ready():
 @client.event
 async def on_message(message):
     if message.content.startswith('/minecraft'):
-        if client.user != message.author:
-            m = "minecraft is great."
+        # ex.) message.content: '/minecraft start' => command: 'start'
+        command = message.content.split(' ')[1]
+
+        if command == 'start':
+            m = await client.send_message(message.channel, 'server starting up...')
+            # await サーバー開始スクリプト
+            await client.edit_message(m, 'Success! server started up.')
+        elif command == 'stop':
+            m = await client.send_message(message.channel, 'server stopping...')
+            # await サーバー停止スクリプト
+            await client.edit_message(m, 'Success! server stopped.')
+        elif command == 'help':
+            m = '''
+            ```Usage: /minecraft [start][stop][status]
+    start   Start up minecraft server
+    stop    Stop minecraft server
+    status  Show minecraft server status(running or stopped)```
+            '''.strip()
             await client.send_message(message.channel, m)
 
 client.run(BOT_TOKEN)
